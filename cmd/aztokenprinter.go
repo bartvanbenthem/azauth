@@ -15,7 +15,12 @@ func AccessTokenPrinter(t token.Requester) {
 	if err != nil {
 		log.Println(err)
 	}
-	fmt.Printf("%v\n", string(tk.AccessToken))
+
+	if len(tk.AccessToken) != 0 {
+		fmt.Printf("%v\n", string(tk.AccessToken))
+	} else {
+		fmt.Printf("No Token received\n")
+	}
 }
 
 func main() {
@@ -31,15 +36,9 @@ func main() {
 	}
 
 	// get azure resource manager api token
-	rmclient := token.RMClient{
-		Auth: credentials,
-	}
-	AccessTokenPrinter(&rmclient)
+	AccessTokenPrinter(&token.RMClient{Auth: credentials})
 
 	// get azure graph api token
-	gclient := token.GraphClient{
-		Auth: credentials,
-	}
-	AccessTokenPrinter(&gclient)
+	AccessTokenPrinter(&token.GraphClient{Auth: credentials})
 
 }
